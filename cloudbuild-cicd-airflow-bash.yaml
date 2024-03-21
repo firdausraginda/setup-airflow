@@ -1,0 +1,13 @@
+steps:
+  
+  - name: python:3.8.17
+    id: 'cicd-airflow'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        ssh cloud_build_ssh_key@34.101.36.18
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
