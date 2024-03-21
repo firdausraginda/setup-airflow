@@ -1,6 +1,5 @@
-./dags/__pycache__/
-./data/__pycache__/
+dags/__pycache__/
+data/__pycache__/
 .vscode/
 __pycache__/
-./vir-env/
-./service_account.json
+vir-env/
