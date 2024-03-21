@@ -22,7 +22,6 @@ if __name__ == "__main__":
     # Replace these variables with your own values
     hostname = '34.101.36.18'
     username = 'cloud_build_ssh_key'
-    # private_key_file = './ssh-private-key-cloudbuild'
     private_key_file = get_cloudbuild_private_key()
 
     # Establish SSH connection
@@ -37,14 +36,19 @@ if __name__ == "__main__":
         print("connected to instance via SSH")
 
         sftp = ssh.open_sftp()
-        dir_to_copy_list = ["dags", "data"]
-
+        
         # loop over directories to copy
+        dir_to_copy_list = ["dags", "data"]
         for dir_name in dir_to_copy_list:
             local_dir = f"./{dir_name}/"
             remote_dir = f"/home/ragindafirdaus01/folder-x/{dir_name}/"
+
+            # loop over files under remote dir, then delete all
+            file_in_remote_dir_list = sftp.listdir(path=remote_dir)
+            for file in file_in_remote_dir_list:
+                sftp.remove(remote_dir+file)
             
-            # loop over files under each dir
+            # loop over files under local dir, then copy to remote dir
             for root, dirs, files in os.walk(local_dir):
                 for file in files:
                     if "__pycache__" not in root:
