@@ -1,0 +1,16 @@
+steps:
+  
+  - name: python:3.8.17
+    id: 'cicd-airflow'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        python3 -m pip install --upgrade pip
+        pip install --upgrade pip
+        pip install -r requirements-cicd.txt
+        python3 ./cicd_airflow.py
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
