@@ -17,7 +17,7 @@ def print_string(message):
 
 with DAG(
     # Define DAG id
-    'simple_python_operator',
+    'simple_python',
     default_args=default_args,
     description='echoing simple string',
     tags=['explore-airflow', 'python-operator'],

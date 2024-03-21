@@ -2,3 +2,5 @@
 ./data/__pycache__/
 .vscode/
 __pycache__/
+./vir-env/
+./service_account.json
