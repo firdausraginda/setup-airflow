@@ -46,7 +46,7 @@ steps:
     args:
       - '-c'
       - |
-        ssh -i ./ssh-private-key-cloudbuild cloud_build_ssh_key@34.101.36.18 \
+        ssh -i ./ssh-private-key-cloudbuild cloud_build_ssh_key@34.101.110.221 \
         && cd /home/ragindafirdaus01/setup-airflow/ \
         && sudo docker compose down \
         && sudo docker compose up -d
