@@ -34,4 +34,4 @@ steps:
     args:
       - '-c'
       - |
-        gcloud compute ssh your-vm-instance-name --zone=your-vm-zone --command "bash -s" < /home/ragindafirdaus01/setup-airflow/restart-container.sh
+        gcloud compute ssh your-vm-instance-name --zone=your-vm-zone --command "cd /home/ragindafirdaus01/setup-airflow/; ls -l"
