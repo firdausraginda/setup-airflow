@@ -45,10 +45,8 @@ steps:
       - '-c'
       - |
         ls -l \
-        && chmod 400 ssh-private-key-cloudbuild \
-        && ls -l \
-        && ssh -i ./ssh-private-key-cloudbuild cloud_build_ssh_key@34.101.110.221 -o StrictHostKeyChecking=no \
-        && ls -l
+        && chmod 400 ./ssh-private-key-cloudbuild \
+        && gcloud compute ssh airflow-instance --zone asia-southeast2-a --ssh-key-file ./ssh-private-key-cloudbuild --command "ls -l"
 
   # - name: 'gcr.io/cloud-builders/gcloud'
   #   entrypoint: 'bash'
