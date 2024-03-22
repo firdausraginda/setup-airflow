@@ -28,24 +28,23 @@ steps:
   #     - 'push'
   #     - 'us-east1-docker.pkg.dev/alpine-life-350508/docker-base-image/airflow-main-img:latest'
 
-  # - name: 'gcr.io/cloud-builders/gcloud'
-  #   entrypoint: 'bash'
-  #   args:
-  #     - '-c'
-  #     - |
-  #       gcloud auth configure-docker us-east1-docker.pkg.dev \
-  #       && docker build -t airflow-main-img:latest . \
-  #       && docker tag airflow-main-img:latest us-east1-docker.pkg.dev/alpine-life-350508/docker-base-image/airflow-main-img:latest \
-  #       && docker push us-east1-docker.pkg.dev/alpine-life-350508/docker-base-image/airflow-main-img:latest
+  # - name: 'gcr.io/cloud-builders/gsutil'
+  #   args: ['cp', 'gs://pipeline-ops/creds/ssh-private-key-cloudbuild', './ssh-private-key-cloudbuild']
 
+  # step 5: download private key file from Cloud Storage
   - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['cp', 'gs://pipeline-ops/creds/ssh-private-key-cloudbuild', './ssh-private-key-cloudbuild']
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gsutil cp gs://pipeline-ops/creds/ssh-private-key-cloudbuild .
 
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
+        chmod 400 ssh-private-key-cloudbuild
         ssh -i ./ssh-private-key-cloudbuild cloud_build_ssh_key@34.101.110.221 \
         && cd /home/ragindafirdaus01/setup-airflow/ \
         && sudo docker compose down \
