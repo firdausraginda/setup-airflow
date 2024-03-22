@@ -1,0 +1,15 @@
+steps:
+  
+  - name: python:3.8.17
+    id: 'cicd-airflow'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud auth configure-docker us-east1-docker.pkg.dev
+        docker build -t airflow-main-img:latest .
+        docker tag airflow-main-img:latest us-east1-docker.pkg.dev/alpine-life-350508/docker-base-image/airflow-main-img:latest
+        docker push us-east1-docker.pkg.dev/alpine-life-350508/docker-base-image/airflow-main-img:latest
+
+options:
+  logging: CLOUD_LOGGING_ONLY
