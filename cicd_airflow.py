@@ -20,7 +20,7 @@ def get_cloudbuild_private_key(blob="creds/ssh-private-key-cloudbuild"):
 
 if __name__ == "__main__":
     # Replace these variables with your own values
-    hostname = '34.101.36.18'
+    hostname = '34.101.110.221'
     username = 'cloud_build_ssh_key'
     private_key_file = get_cloudbuild_private_key()
 
