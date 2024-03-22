@@ -47,7 +47,7 @@ steps:
         ls -l \
         && chmod 400 ssh-private-key-cloudbuild \
         && ls -l \
-        && ssh -i ./ssh-private-key-cloudbuild cloud_build_ssh_key@34.101.110.221 \
+        && ssh -i ./ssh-private-key-cloudbuild cloud_build_ssh_key@34.101.110.221 -o StrictHostKeyChecking=no \
         && ls -l
 
   # - name: 'gcr.io/cloud-builders/gcloud'
