@@ -1,5 +1,5 @@
 steps:
-  # Step 1: Authenticate Docker with Google Cloud Container Registry
+  # step 1: authenticate docker with Google Cloud Container Registry
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
@@ -7,7 +7,7 @@ steps:
       - |
         gcloud auth configure-docker us-east1-docker.pkg.dev
 
-  # Step 2: Build Docker image
+  # step 2: build docker image
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
@@ -15,15 +15,23 @@ steps:
       - 'airflow-main-img:latest'
       - '.'
 
-  # Step 3: Tag Docker image
+  # step 3: tag docker image
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'tag'
       - 'airflow-main-img:latest'
       - 'us-east1-docker.pkg.dev/alpine-life-350508/docker-base-image/airflow-main-img:latest'
 
-  # Step 4: Push Docker image to Google Cloud Container Registry
+  # step 4: push docker image to Google Cloud Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
       - 'us-east1-docker.pkg.dev/alpine-life-350508/docker-base-image/airflow-main-img:latest'
+
+  # step 5: SSH into VM instance and execute commands from script file
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud compute ssh your-vm-instance-name --zone=your-vm-zone --command "bash -s" < /home/ragindafirdaus01/setup-airflow/restart-container.sh
