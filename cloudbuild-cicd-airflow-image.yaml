@@ -1,15 +1,29 @@
 steps:
-  
-  - name: python:3.8.17
-    id: 'cicd-airflow'
+  # Step 1: Authenticate Docker with Google Cloud Container Registry
+  - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
         gcloud auth configure-docker us-east1-docker.pkg.dev
-        docker build -t airflow-main-img:latest .
-        docker tag airflow-main-img:latest us-east1-docker.pkg.dev/alpine-life-350508/docker-base-image/airflow-main-img:latest
-        docker push us-east1-docker.pkg.dev/alpine-life-350508/docker-base-image/airflow-main-img:latest
 
-options:
-  logging: CLOUD_LOGGING_ONLY
+  # Step 2: Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'airflow-main-img:latest'
+      - '.'
+
+  # Step 3: Tag Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'tag'
+      - 'airflow-main-img:latest'
+      - 'us-east1-docker.pkg.dev/alpine-life-350508/docker-base-image/airflow-main-img:latest'
+
+  # Step 4: Push Docker image to Google Cloud Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-east1-docker.pkg.dev/alpine-life-350508/docker-base-image/airflow-main-img:latest'

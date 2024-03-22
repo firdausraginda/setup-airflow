@@ -36,6 +36,8 @@ if __name__ == "__main__":
         print("connected to instance via SSH")
 
         sftp = ssh.open_sftp()
+
+        print("[------------ update remote files begin ------------]")
         
         # loop over directories to copy
         dir_to_copy_list = ["data", "dags"]
@@ -56,6 +58,8 @@ if __name__ == "__main__":
                         remote_path = os.path.join(remote_dir, os.path.relpath(local_path, local_dir))
                         sftp.put(local_path, remote_path)
                         print(f"successfully copy file {str(os.path.join(root, file))} !")
+        
+        print("[------------ update remote files completed ------------]")
 
     except paramiko.AuthenticationException:
         print("Authentication failed, please check your username and private key!")
