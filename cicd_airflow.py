@@ -38,7 +38,7 @@ if __name__ == "__main__":
         sftp = ssh.open_sftp()
         
         # loop over directories to copy
-        dir_to_copy_list = ["dags", "data"]
+        dir_to_copy_list = ["data", "dags"]
         for dir_name in dir_to_copy_list:
             local_dir = f"./{dir_name}/"
             remote_dir = f"/home/ragindafirdaus01/folder-x/{dir_name}/"
