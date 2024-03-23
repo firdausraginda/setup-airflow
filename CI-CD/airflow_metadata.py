@@ -44,7 +44,7 @@ if __name__ == "__main__":
         
         # loop over directories to copy
         for dir_name in DIR_TO_UPDATE:
-            local_dir = f"./{dir_name}/"
+            local_dir = f"../{dir_name}/"
             remote_dir = f"{REMOTE_PATH_MAIN_FOLDER}/{dir_name}/"
 
             # loop over files under remote dir, then delete all
@@ -52,7 +52,7 @@ if __name__ == "__main__":
             for file in file_in_remote_dir_list:
                 sftp.remove(remote_dir+file)
             
-            # loop over files under local dir, then copy to remote dir
+            # # loop over files under local dir, then copy to remote dir
             for root, dirs, files in os.walk(local_dir):
                 for file in files:
                     if "__pycache__" not in root:
