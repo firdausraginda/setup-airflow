@@ -44,4 +44,4 @@ steps:
       - '-c'
       - |
         chmod 400 ./ssh-key-cloudbuild \
-        && gcloud compute ssh airflow-instance --zone asia-southeast2-a --ssh-key-file ./ssh-key-cloudbuild --force-key-file-overwrite --command "cd /home/ragindafirdaus01/setup-airflow/; pwd; ls -l"
+        && gcloud compute ssh airflow-instance --zone asia-southeast2-a --ssh-key-file ./ssh-key-cloudbuild --command "cd /home/ragindafirdaus01/setup-airflow/; pwd; ls -l"
