@@ -34,8 +34,7 @@ steps:
     args:
       - '-c'
       - |
-        gsutil cp gs://pipeline-ops/creds/ssh-private-key-cloudbuild ./ssh-private-key-cloudbuild \
-        && gsutil cp gs://pipeline-ops/creds/ssh-private-key-cloudbuild.pub ./ssh-private-key-cloudbuild.pub
+        gsutil cp gs://pipeline-ops/creds/ssh-private-key-cloudbuild ./ssh-private-key-cloudbuild
   
   # step 6: ssh to GCE VM instance, then re-run airflow container
   - name: 'gcr.io/cloud-builders/gcloud'
