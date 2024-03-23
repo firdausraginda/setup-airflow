@@ -4,6 +4,11 @@ import os
 from google.auth import default
 from google.cloud import storage
 
+# define constant
+REMOTE_HOSTNAME = "34.101.149.62"
+REMOTE_USERNAME = "cloud_build_ssh_key"
+REMOTE_PATH_MAIN_FOLDER = "/home/ragindafirdaus01/setup-airflow"
+DIR_TO_UPDATE = ["data", "dags"]
 
 def get_cloudbuild_private_key(blob="creds/ssh-key-cloudbuild"):
 
@@ -19,9 +24,7 @@ def get_cloudbuild_private_key(blob="creds/ssh-key-cloudbuild"):
 
 
 if __name__ == "__main__":
-    # Replace these variables with your own values
-    hostname = '34.101.149.62'
-    username = 'cloud_build_ssh_key'
+    
     private_key_file = get_cloudbuild_private_key()
 
     # Establish SSH connection
@@ -32,7 +35,7 @@ if __name__ == "__main__":
     private_key = paramiko.RSAKey.from_private_key(StringIO(private_key_file))
 
     try:
-        ssh.connect(hostname=hostname, username=username, pkey=private_key)
+        ssh.connect(hostname=REMOTE_HOSTNAME, username=REMOTE_USERNAME, pkey=private_key)
         print("connected to instance via SSH")
 
         sftp = ssh.open_sftp()
@@ -40,10 +43,9 @@ if __name__ == "__main__":
         print("[------------ update remote files begin ------------]")
         
         # loop over directories to copy
-        dir_to_copy_list = ["data", "dags"]
-        for dir_name in dir_to_copy_list:
+        for dir_name in DIR_TO_UPDATE:
             local_dir = f"./{dir_name}/"
-            remote_dir = f"/home/ragindafirdaus01/folder-x/{dir_name}/"
+            remote_dir = f"{REMOTE_PATH_MAIN_FOLDER}/{dir_name}/"
 
             # loop over files under remote dir, then delete all
             file_in_remote_dir_list = sftp.listdir(path=remote_dir)
