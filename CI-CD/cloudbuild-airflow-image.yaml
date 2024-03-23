@@ -1,0 +1,48 @@
+steps:
+
+  # step 1: authenticate docker with google artifacts registry
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud auth configure-docker us-east1-docker.pkg.dev
+
+  # step 2: build docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'airflow-main-img:latest'
+      - '.'
+
+  # step 3: tag docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'tag'
+      - 'airflow-main-img:latest'
+      - 'us-east1-docker.pkg.dev/alpine-life-350508/docker-base-image/airflow-main-img:latest'
+
+  # step 4: push docker image to google artifacts registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-east1-docker.pkg.dev/alpine-life-350508/docker-base-image/airflow-main-img:latest'
+
+  # step 5: download private key file from google cloud storage
+  - name: 'gcr.io/cloud-builders/gsutil'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gsutil cp gs://pipeline-ops/creds/ssh-key-cloudbuild ./ssh-key-cloudbuild \
+        && gsutil cp gs://pipeline-ops/creds/ssh-key-cloudbuild.pub ./ssh-key-cloudbuild.pub
+
+  # step 6: ssh to GCE VM instance, then re-run airflow container
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        chmod 400 ./ssh-key-cloudbuild \
+        && gcloud compute ssh airflow-instance --zone asia-southeast2-a --ssh-key-file ./ssh-key-cloudbuild --command "cd /home/ragindafirdaus01/setup-airflow/; sudo docker compose down; sudo docker compose up -d"
