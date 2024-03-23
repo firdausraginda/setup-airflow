@@ -64,10 +64,10 @@ if __name__ == "__main__":
         print("[------------ update remote files completed ------------]")
 
     except paramiko.AuthenticationException:
-        print("Authentication failed, please check your username and private key!")
+        raise "Authentication failed, please check your username and private key!"
 
     except paramiko.SSHException as e:
-        print("Unable to establish SSH connection:", str(e))
+        raise f"Unable to establish SSH connection: {str(e)}"
 
     finally:
         sftp.close()
