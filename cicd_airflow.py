@@ -5,7 +5,7 @@ from google.auth import default
 from google.cloud import storage
 
 
-def get_cloudbuild_private_key(blob="creds/ssh-private-key-cloudbuild"):
+def get_cloudbuild_private_key(blob="creds/ssh-key-cloudbuild"):
 
     # init gcp client
     credentials, _ = default()
