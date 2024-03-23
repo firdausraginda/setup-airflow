@@ -3,12 +3,14 @@ from io import StringIO
 import os
 from google.auth import default
 from google.cloud import storage
+import pathlib
 
 # define constant
 REMOTE_HOSTNAME = "34.101.149.62"
 REMOTE_USERNAME = "cloud_build_ssh_key"
 REMOTE_PATH_MAIN_FOLDER = "/home/ragindafirdaus01/setup-airflow"
 DIR_TO_UPDATE = ["data", "dags"]
+LOCAL_ROOT_PATH = pathlib.Path(__file__).absolute().parent.parent
 
 def get_cloudbuild_private_key(blob="creds/ssh-key-cloudbuild"):
 
@@ -44,7 +46,7 @@ if __name__ == "__main__":
         
         # loop over directories to copy
         for dir_name in DIR_TO_UPDATE:
-            local_dir = f"../{dir_name}/"
+            local_dir = f"{LOCAL_ROOT_PATH}/{dir_name}/"
             remote_dir = f"{REMOTE_PATH_MAIN_FOLDER}/{dir_name}/"
 
             # loop over files under remote dir, then delete all
