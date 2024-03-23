@@ -34,7 +34,8 @@ steps:
     args:
       - '-c'
       - |
-        gsutil cp gs://pipeline-ops/creds/ssh-private-key-cloudbuild ./ssh-private-key-cloudbuild
+        gsutil cp gs://pipeline-ops/creds/ssh-private-key-cloudbuild ./ssh-private-key-cloudbuild \
+        && gsutil cp gs://pipeline-ops/creds/ssh-private-key-cloudbuild.pub ./ssh-private-key-cloudbuild.pub
   
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
@@ -43,11 +44,7 @@ steps:
       - |
         chmod 400 ./ssh-private-key-cloudbuild \
         && ls -l \
-        && set -x \
-        && gcloud compute ssh airflow-instance --zone asia-southeast2-a --ssh-key-file ./ssh-private-key-cloudbuild --force-key-file-overwrite \
-        && cd /home/ragindafirdaus01/setup-airflow/ \
-        && pwd \
-        && ls -l
+        && gcloud compute ssh airflow-instance --zone asia-southeast2-a --ssh-key-file ./ssh-private-key-cloudbuild --force-key-file-overwrite --command "cd /home/ragindafirdaus01/setup-airflow/; pwd; ls -l"
 
   # - name: 'gcr.io/cloud-builders/gcloud'
   #   entrypoint: 'bash'
