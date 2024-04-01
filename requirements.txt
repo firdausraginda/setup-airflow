@@ -1,1 +1,2 @@
 polars==0.20.16
+requests
