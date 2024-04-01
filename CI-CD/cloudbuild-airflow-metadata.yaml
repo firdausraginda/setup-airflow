@@ -1,15 +1,33 @@
 steps:
-  
-  - name: python:3.8.17
-    id: 'execute-python-cicd'
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'auth-docker-with-artifacts-registry'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        python3 -m pip install --upgrade pip
-        pip install --upgrade pip
-        pip install -r CI-CD/requirements.txt
-        python3 CI-CD/airflow_metadata.py
+        gcloud auth configure-docker us-east1-docker.pkg.dev
 
-options:
-  logging: CLOUD_LOGGING_ONLY
+  - name: 'gcr.io/cloud-builders/gsutil'
+    id: 'download-ssh-key'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gsutil cp gs://pipeline-ops/creds/ssh-key-cloudbuild ./ssh-key-cloudbuild \
+        && gsutil cp gs://pipeline-ops/creds/ssh-key-cloudbuild.pub ./ssh-key-cloudbuild.pub
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'delete-and-copy-folder'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        chmod 400 ./ssh-key-cloudbuild \
+        && gcloud compute ssh instance-20240324-050710 --zone=us-central1-a --ssh-key-file=./ssh-key-cloudbuild \
+          --command "\
+            cd /home/ragindafirdaus01/setup-airflow/; \
+            sudo rm -rf data/; \
+            sudo rm -rf dags/" \
+        && gcloud compute scp --zone=us-central1-a --ssh-key-file=./ssh-key-cloudbuild --recurse data/ instance-20240324-050710:/home/ragindafirdaus01/setup-airflow/ \
+        && gcloud compute scp --zone=us-central1-a --ssh-key-file=./ssh-key-cloudbuild --recurse dags/ instance-20240324-050710:/home/ragindafirdaus01/setup-airflow/

@@ -21,7 +21,7 @@ with DAG(
     # Define DAG id
     'simple_python_polars',
     default_args=default_args,
-    description='echoing simple string',
+    description='echoing simple string modification',
     tags=['explore-airflow', 'python-operator'],
     # To enabled/disabled backfilling, set the catchup property
     catchup=False,
