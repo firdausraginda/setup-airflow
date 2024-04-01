@@ -29,5 +29,5 @@ steps:
             cd /home/ragindafirdaus01/setup-airflow/; \
             sudo rm -rf data/*; \
             sudo rm -rf dags/*" \
-        && gcloud compute scp --zone=us-central1-a --ssh-key-file=./ssh-key-cloudbuild --recurse data/ instance-20240324-050710:/home/ragindafirdaus01/setup-airflow/ \
-        && gcloud compute scp --zone=us-central1-a --ssh-key-file=./ssh-key-cloudbuild --recurse dags/ instance-20240324-050710:/home/ragindafirdaus01/setup-airflow/
+        && gcloud compute scp --zone=us-central1-a --ssh-key-file=./ssh-key-cloudbuild --recurse data/* instance-20240324-050710:/home/ragindafirdaus01/setup-airflow/data/ \
+        && gcloud compute scp --zone=us-central1-a --ssh-key-file=./ssh-key-cloudbuild --recurse dags/* instance-20240324-050710:/home/ragindafirdaus01/setup-airflow/dags/
