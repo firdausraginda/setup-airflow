@@ -21,7 +21,7 @@ with DAG(
     # Define DAG id
     'simple_python_polars',
     default_args=default_args,
-    description='echoing simple string modification',
+    description='echoing simple string modification original',
     tags=['explore-airflow', 'python-operator'],
     # To enabled/disabled backfilling, set the catchup property
     catchup=False,
@@ -30,7 +30,7 @@ with DAG(
     first_task = PythonOperator(
         task_id='first_task',
         python_callable=print_string,
-        op_kwargs={'message': 'This message will shown in logs'},
+        op_kwargs={'message': 'This message will shown in logs original'},
         dag=dag
     )
 
