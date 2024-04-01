@@ -18,19 +18,11 @@ steps:
         && gsutil cp gs://pipeline-ops/creds/ssh-key-cloudbuild.pub ./ssh-key-cloudbuild.pub
 
   - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'rerun-docker-container'
+    id: 'copy-folder-data-and-dags'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
         chmod 400 ./ssh-key-cloudbuild \
-        && gcloud compute scp --zone=us-central1-a --ssh-key-file=./ssh-key-cloudbuild docker-compose.yaml instance-20240324-050710:/home/ragindafirdaus01/setup-airflow/docker-compose.yaml
-
-  # - name: 'gcr.io/cloud-builders/gcloud'
-  #   id: 'rerun-docker-container'
-  #   entrypoint: 'bash'
-  #   args:
-  #     - '-c'
-  #     - |
-  #       chmod 400 ./ssh-key-cloudbuild \
-  #       && gcloud compute ssh instance-20240324-050710 --zone us-central1-a --ssh-key-file ./ssh-key-cloudbuild --command "cd /home/ragindafirdaus01/setup-airflow/; sudo docker compose down; sudo docker compose up -d"
+        && gcloud compute scp --zone=us-central1-a --ssh-key-file=./ssh-key-cloudbuild data/ instance-20240324-050710:/home/ragindafirdaus01/setup-airflow/data/ \
+        && gcloud compute scp --zone=us-central1-a --ssh-key-file=./ssh-key-cloudbuild dags/ instance-20240324-050710:/home/ragindafirdaus01/setup-airflow/dags/
