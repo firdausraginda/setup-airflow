@@ -38,5 +38,13 @@ with DAG(
         dag=dag
     )
 
+    # Define the BashOperator 
+    independent_third_task = BashOperator(
+        task_id='independent_third_task',
+        # Define the bash_command
+        bash_command='echo "testing independent bash operator"',
+        dag=dag
+    )
+
     # Define task depedencies
     first_task >> second_task
