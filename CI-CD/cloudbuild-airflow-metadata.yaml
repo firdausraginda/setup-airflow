@@ -1,13 +1,5 @@
 steps:
 
-  # - name: 'gcr.io/cloud-builders/gcloud'
-  #   id: 'auth-docker-with-artifacts-registry'
-  #   entrypoint: 'bash'
-  #   args:
-  #     - '-c'
-  #     - |
-  #       gcloud auth configure-docker us-east1-docker.pkg.dev
-
   - name: 'gcr.io/cloud-builders/gsutil'
     id: 'download-ssh-key'
     entrypoint: 'bash'
