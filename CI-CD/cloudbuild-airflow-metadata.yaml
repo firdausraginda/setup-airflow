@@ -18,11 +18,16 @@ steps:
         && gsutil cp gs://pipeline-ops/creds/ssh-key-cloudbuild.pub ./ssh-key-cloudbuild.pub
 
   - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'copy-folder-data-and-dags'
+    id: 'delete-and-copy-folder'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
         chmod 400 ./ssh-key-cloudbuild \
+        && gcloud compute ssh instance-20240324-050710 --zone=us-central1-a --ssh-key-file=./ssh-key-cloudbuild \
+          --command "\
+            cd /home/ragindafirdaus01/setup-airflow/; \
+            sudo rm -rf data/; \
+            sudo rm -rf dags/"
         && gcloud compute scp --zone=us-central1-a --ssh-key-file=./ssh-key-cloudbuild --recurse data/ instance-20240324-050710:/home/ragindafirdaus01/setup-airflow/ \
         && gcloud compute scp --zone=us-central1-a --ssh-key-file=./ssh-key-cloudbuild --recurse dags/ instance-20240324-050710:/home/ragindafirdaus01/setup-airflow/
