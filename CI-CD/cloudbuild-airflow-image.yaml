@@ -27,8 +27,8 @@ steps:
     args:
       - '-c'
       - |
-        gsutil cp gs://pipeline-ops/creds/ssh-key-cloudbuild ./ssh-key-cloudbuild \
-        && gsutil cp gs://pipeline-ops/creds/ssh-key-cloudbuild.pub ./ssh-key-cloudbuild.pub
+        gsutil cp gs://pipeline-ops/creds/ssh_key_cloud_build ./ssh_key_cloud_build \
+        && gsutil cp gs://pipeline-ops/creds/ssh_key_cloud_build.pub ./ssh_key_cloud_build.pub
 
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'rerun-docker-container'
@@ -36,9 +36,9 @@ steps:
     args:
       - '-c'
       - |
-        chmod 400 ./ssh-key-cloudbuild \
-        && gcloud compute scp --zone=us-central1-a --ssh-key-file=./ssh-key-cloudbuild docker-compose.yaml instance-20240324-050710:/home/ragindafirdaus01/setup-airflow/docker-compose.yaml \
-        && gcloud compute ssh instance-20240324-050710 --zone=us-central1-a --ssh-key-file=./ssh-key-cloudbuild \
+        chmod 400 ./ssh_key_cloud_build \
+        && gcloud compute scp --zone=us-central1-a --ssh-key-file=./ssh_key_cloud_build docker-compose.yaml instance-20240324-050710:/home/ragindafirdaus01/setup-airflow/docker-compose.yaml \
+        && gcloud compute ssh instance-20240324-050710 --zone=us-central1-a --ssh-key-file=./ssh_key_cloud_build \
           --command "\
             cd /home/ragindafirdaus01/setup-airflow/; \
             sudo docker compose down; \
